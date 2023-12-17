@@ -22,9 +22,10 @@ instead.
 * `x`: constructs data corresponding to the main application (`f x` in the example)
 -/
 def Lean.PrettyPrinter.Delaborator.withOverApp (arity : Nat) (x : Delab) : Delab := do
-  let n := (← getExpr).getAppNumArgs
+  let e ← getExpr
+  let n := e.getAppNumArgs
   guard (n ≥ arity)
-  let kinds ← getParamKinds
+  let kinds ← getParamKinds e.getAppFn e.getAppArgs
   let rec
   /-- Inner loop of `withOverApp`. -/
   loop : Nat → DelabM (Term × Array Term)
